@@ -9,11 +9,11 @@ Core/Src/ece2_474_routine.c: 작성 완료. Core/Inc/stm32_1_config.h의 STM32_1
 | 1 | 버튼 인터럽트로 내장 LED 토글 |
 | 2 | TIM6 100ms × 10 = LED 상태 1초마다 변경 |
 | 3 | PB4 PWM 1kHz, 듀티 50% |
-| 4 (현재) | 과제3: 버튼으로 LED 상태 변경 간격 1→2→4→8→1초 |
+| 4 | 과제3: 버튼으로 LED 상태 변경 간격 1→2→4→8→1초 |
 | 5 | 과제4: 버튼으로 PWM 듀티 25→50→75→25% |
 
 모든 모드 ARM 빌드와 실제 C 소스를 사용한 모의 HAL 로직 검증 PASS. verification 폴더의 JSON과 로그 참조.
-firmware 폴더에 모드별 ELF/HEX가 있습니다. 현재 build/stm32/Debug/ece2_474.elf는 과제3입니다.
+firmware 폴더에 모드별 ELF/HEX가 있습니다. 현재 선택값은 5(과제4 PWM)이며 build/stm32/Debug/ece2_474.elf도 모드5입니다.
 
 ## 보드에서 실행할 때
 1. ece2_474.code-workspace를 VS Code에서 엽니다.

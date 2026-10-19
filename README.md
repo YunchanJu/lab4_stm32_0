@@ -39,3 +39,15 @@ python analyze_led_video.py 과제2.mp4 led4_brightness.csv --mode external
 추가 참고 교재: Harris and Harris, Digital Design and Computer Architecture ARM Edition, 2015, ISBN 9780128000564. https://www.sciencedirect.com/book/monograph/9780128000564/digital-design-and-computer-architecture
 
 
+
+## 10/19 예비 실험 및 10/12 보완
+
+- [10/19 예비레포트 PDF](STM32_1_1019/prelab.pdf)
+- [10/19 코드·펌웨어·FPGA 자료](STM32_1_1019/)
+- [10/19 전체 프로젝트 ZIP](STM32_1_1019/full_project.zip)
+- [10/12 전체 프로젝트·펌웨어 보완](supplement_1012/)
+- [실제 실험 전 확인 사항](STM32_1_1019/OPEN_ITEMS.md)
+
+10/12 LED 간격 과제 두 개는 STM32 대상입니다. FPGA 추가실험은 곱셈기·BCD 변환기입니다. 두 FPGA 회로와 10/19 피아노의 비트스트림을 생성했습니다. 10/19 신호등·ADC는 TB와 합성 통과, 실제 장비 핀맵 확인 전이므로 bit 파일을 제공하지 않습니다.
+
+10/19 제출 태그: `stm32-1-prelab-v1`. 실측 및 보드 다운로드는 미수행입니다. 기존 10/12 report.pdf·영상·원본 사진은 유지했습니다.
