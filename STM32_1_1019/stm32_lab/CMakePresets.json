@@ -1,0 +1,42 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "default",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/stm32/${presetName}",
+      "toolchainFile": "${sourceDir}/cmake/gcc-arm-none-eabi.cmake",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "C:/Users/samsung/Documents/Codex/2026-10-11/e/work/stm32/arm_toolchain/bin/arm-none-eabi-gcc.exe",
+        "CMAKE_CXX_COMPILER": "C:/Users/samsung/Documents/Codex/2026-10-11/e/work/stm32/arm_toolchain/bin/arm-none-eabi-g++.exe",
+        "CMAKE_MAKE_PROGRAM": "C:/Users/samsung/AppData/Local/stm32cube/bundles/ninja/1.13.2+st.1/bin/ninja.exe",
+        "TOOLCHAIN_PREFIX": "C:/Users/samsung/Documents/Codex/2026-10-11/e/work/stm32/arm_toolchain/bin/arm-none-eabi-"
+      }
+    },
+    {
+      "name": "Debug",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "Release",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "Debug",
+      "configurePreset": "Debug"
+    },
+    {
+      "name": "Release",
+      "configurePreset": "Release"
+    }
+  ]
+}
