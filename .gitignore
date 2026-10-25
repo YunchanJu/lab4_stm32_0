@@ -1,0 +1,12 @@
+# Reproducible source and selected evidence are tracked; caches are not.
+**/build/
+**/vivado_recreated/
+**/.Xil/
+**/xsim.dir/
+**/*.jou
+**/*.pb
+**/*.dcp
+**/*.str
+**/*.backup.log
+**/CMakeUserPresets.json
+__pycache__/

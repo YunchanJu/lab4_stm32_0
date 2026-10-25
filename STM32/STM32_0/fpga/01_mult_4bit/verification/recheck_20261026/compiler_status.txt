@@ -1,0 +1,1 @@
+Icarus driver exit=0; newly generated VVP is checked below.
