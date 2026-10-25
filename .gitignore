@@ -10,3 +10,6 @@
 **/*.backup.log
 **/CMakeUserPresets.json
 __pycache__/
+
+**/rewrite_gui/
+**/~$*

@@ -1,50 +1,39 @@
 `timescale 1ns/1ps
 module tb_traffic;
-    reg clk=0,rst=1,flicker=0;
-    always #5 clk=~clk;
-    wire [3:0] red,yellow,green,left,wr,wg;
-    traffic #(.CLK_HZ(4)) dut(clk,rst,flicker,red,yellow,green,left,wr,wg);
-    integer direction,phase,subcycle;
-    reg [3:0] vm,pm,er,ey,eg,ewr,ewg;
-    task step; begin @(posedge clk); #1; end endtask
-    task check;
+    reg clk=0,rst=1,flicker=0;always #5 clk=~clk;
+    wire [3:0] red,yellow,green,left_light,wr,wg;
+    traffic #(.CLK_HZ(8)) dut(clk,rst,flicker,red,yellow,green,left_light,wr,wg);
+    integer cycle,sec,phase,dir,sub;reg [3:0] mask,er,ey,eg,ewr,ewg;
+    task inspect(input integer t);
         begin
-            case(direction)
-                0: begin vm=8; pm=4; end
-                1: begin vm=4; pm=2; end
-                2: begin vm=2; pm=1; end
-                3: begin vm=1; pm=8; end
-            endcase
-            er=~vm; ey=0; eg=0; ewr=15; ewg=0;
-            if(phase<11) eg=vm; else ey=vm;
-            if(phase<4) begin ewg=pm; ewr=~pm; end
-            else if(phase<11) begin
-                ewr=~pm; if(subcycle<2) ewg=pm;
-            end
-            if({red,yellow,green,wr,wg} !== {er,ey,eg,ewr,ewg})
-                $fatal(1,"traffic dir=%0d phase=%0d sub=%0d",direction,phase,subcycle);
-            if(left !== green) $fatal(1,"left indicator");
+            sec=t/8;sub=t%8;dir=(sec/13)%4;phase=sec%13;mask=1<<dir;
+            er=~mask;eg=0;ey=0;ewr=15;ewg=0;
+            if(phase<11)eg=mask;else ey=mask;
+            if(phase<4)begin ewr=~mask;ewg=mask;end
+            else if(phase<11)begin ewr=~mask;if(sub<4)ewg=mask;end
+            if({red,yellow,green,left_light,wr,wg}!=={er,ey,eg,eg,ewr,ewg})
+                $fatal(1,"traffic mismatch second=%0d sub=%0d",sec,sub);
         end
     endtask
     initial begin
-        step; @(negedge clk); rst=0;
-        // 네 방향의 13단계와 각 초의 점멸을 확인합니다.
-        for(direction=0;direction<4;direction=direction+1)
-            for(phase=0;phase<13;phase=phase+1)
-                for(subcycle=0;subcycle<4;subcycle=subcycle+1) begin
-                    check; step;
-                end
-        direction=0; phase=0; subcycle=0; check;
-        @(negedge clk); flicker=1; step;
-        repeat(8) begin
-            if(red !== 0 || green !== 0 || wg !== 0) $fatal(1,"flicker outputs");
-            if(yellow !== wr || !(yellow===0 || yellow===15)) $fatal(1,"flicker blink");
-            step;
+        @(posedge clk);#1;@(negedge clk);rst=0;
+        // Two full 52-second cycles, including all half-second boundaries.
+        for(cycle=0;cycle<832;cycle=cycle+1)begin
+            #1;inspect(cycle);@(posedge clk);#1;@(negedge clk);
         end
-        @(negedge clk); flicker=0; rst=1; step;
-        direction=0; phase=0; subcycle=0; check;
-        $display("PASS traffic: full cycle, pedestrian blink, flicker, reset"); $finish;
+        flicker=1;
+        repeat(16)begin
+            #1;
+            if(red!==0||green!==0||left_light!==0||wg!==0||yellow!==wr)
+                $fatal(1,"flicker safety outputs");
+            if(yellow!==(dut.subsecond<4?4'hf:4'h0))$fatal(1,"blink");
+            @(posedge clk);#1;@(negedge clk);
+        end
+        flicker=0;#1;
+        if(green!==1)$fatal(1,"restart direction");
+        rst=1;@(posedge clk);#1;
+        if(dut.phase!==0||dut.direction!==0||dut.subsecond!==0)$fatal(1,"reset");
+        $display("PASS traffic rewrite: 2 full cycles, 1-2-4-8 order, 11/2s phases, walk blink, flicker, reset");$finish;
     end
-    initial begin #100000; $fatal(1,"timeout"); end
+    initial begin #20000;$fatal(1,"timeout");end
 endmodule
-

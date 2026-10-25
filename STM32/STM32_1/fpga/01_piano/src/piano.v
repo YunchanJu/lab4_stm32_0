@@ -1,64 +1,33 @@
 `timescale 1ns/1ps
+// New local implementation, 2026-10-26. Exactly one active key selects a note.
 module piano #(parameter CLK_HZ=50_000_000)(
-    input wire clk_50mhz, rst_p,
+    input wire clk_50mhz,rst_p,
     input wire [7:0] key,
-    output wire piezo
+    output reg piezo
 );
-    wire [31:0] frequency_hz;
-    note_select u_note(key, frequency_hz);
-    square_tone #(.CLK_HZ(CLK_HZ)) u_tone(clk_50mhz,rst_p,frequency_hz,piezo);
-endmodule
-
-
-`timescale 1ns/1ps
-// 버튼 입력에 대응하는 음의 주파수를 선택합니다.
-// 보드의 버튼 입력은 안정된 HIGH 활성 신호로 전달합니다.
-module note_select(input wire [7:0] key, output reg [31:0] frequency_hz);
-    always @* begin
-        case(key)
-            8'h80: frequency_hz=262;
-            8'h40: frequency_hz=294;
-            8'h20: frequency_hz=330;
-            8'h10: frequency_hz=349;
-            8'h08: frequency_hz=392;
-            8'h04: frequency_hz=440;
-            8'h02: frequency_hz=494;
-            8'h01: frequency_hz=523;
-            default: frequency_hz=0; // 무입력이나 여러 버튼 입력은 무음
-        endcase
-    end
-endmodule
-
-
-`timescale 1ns/1ps
-module square_tone #(parameter CLK_HZ=50_000_000)(
-    input wire clk_50mhz, rst_p,
-    input wire [31:0] frequency_hz,
-    output reg tone
-);
-    reg [31:0] count, previous_hz;
-    // Fixed note divisors: synthesize a constant LUT instead of a variable divider.
-    reg [31:0] half_cycles;
-    always @* begin
-        case(frequency_hz)
-            262: half_cycles=CLK_HZ/(2*262);
-            294: half_cycles=CLK_HZ/(2*294);
-            330: half_cycles=CLK_HZ/(2*330);
-            349: half_cycles=CLK_HZ/(2*349);
-            392: half_cycles=CLK_HZ/(2*392);
-            440: half_cycles=CLK_HZ/(2*440);
-            494: half_cycles=CLK_HZ/(2*494);
-            523: half_cycles=CLK_HZ/(2*523);
-            default: half_cycles=1;
-        endcase
-    end
-    always @(posedge clk_50mhz) begin
-        if(rst_p) begin count<=0; tone<=0; previous_hz<=0; end
-        else if(frequency_hz==0 || frequency_hz!=previous_hz) begin
-            count<=0; tone<=0; previous_hz<=frequency_hz;
+    reg [7:0] selected;
+    reg [31:0] divider,count;
+    function [31:0] note_divider(input [7:0] keys);
+        begin
+            case(keys)
+                8'h80: note_divider=CLK_HZ/524;
+                8'h40: note_divider=CLK_HZ/588;
+                8'h20: note_divider=CLK_HZ/660;
+                8'h10: note_divider=CLK_HZ/698;
+                8'h08: note_divider=CLK_HZ/784;
+                8'h04: note_divider=CLK_HZ/880;
+                8'h02: note_divider=CLK_HZ/988;
+                8'h01: note_divider=CLK_HZ/1046;
+                default: note_divider=0;
+            endcase
         end
-        else if(count >= half_cycles-1) begin count<=0; tone<=~tone; end
+    endfunction
+    always @* divider=note_divider(key);
+    always @(posedge clk_50mhz) begin
+        if(rst_p) begin selected<=0;count<=0;piezo<=0;end
+        else if(key!=selected) begin selected<=key;count<=0;piezo<=0;end
+        else if(divider==0) begin count<=0;piezo<=0;end
+        else if(count==divider-1) begin count<=0;piezo<=~piezo;end
         else count<=count+1;
     end
 endmodule
-
