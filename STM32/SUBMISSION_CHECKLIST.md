@@ -30,7 +30,7 @@
 | 피아노 | fpga/01_piano | 입력별 실제 음, 시뮬레이션 비교 | RTL·TB·XDC·bit, 보드 영상·Vivado 캡처 4장 있음 |
 | 신호등 | fpga/02_traffic | 52초 순환·보행자·flicker | RTL·TB·합성, 보드 영상·Vivado 캡처 5장 있음. 당시 소스·핀·bit 미확보 |
 | ADC | fpga/03_adc | 채널·입력전압·디지털값, 장치 모델/Vref | RTL·TB·합성, 보드 영상·Vivado 캡처 3장 있음. 당시 소스·핀·Vref 미확보 |
-| 보고서 | reports/prelab.pdf | 실측에 근거한 결과보고서 | 기존 예비레포트 보존. 새 결과보고서 작성 후 reports에 추가 |
+| 보고서 | reports/prelab.pdf | 실측에 근거한 결과보고서 | 기존 예비레포트 보존. 실측·영상에 근거한 새 결과보고서 7쪽 추가 |
 
 사용자 첨부 영상 5개와 사진 19장을 해당 evidence에 보관했습니다. 과제3영상은 과제3, 과제3 오실로는 과제4로 분류했습니다. PWM 실측은 evidence/pwm_measurements.csv, 출처는 common/SOURCE_PROVENANCE.md에 기록했습니다. 예제의 별도 시연은 제공되지 않았으며 과제 자료와 중복하는 항목은 따로 완료로 단정하지 않습니다.
 
@@ -52,3 +52,5 @@
 - 과제11: FPGA→MCU, 직접 작성한 SPI 마스터 RTL/TB/XDC, 1MHz 이하 파형·MCU 수신 출력.
 - 과제12: FPGA→FPGA, 두 역할 교대·수신 UART 출력.
 - 결과보고서. MCU–MCU/FPGA–FPGA는 지정 조 연결, MCU–FPGA는 자기 조 장비. 별도 교재 추가실습은 없습니다.
+
+10/26 예비보고서 7쪽도 STM32_2/reports에 추가했습니다. 보고서의 실기 미확인 항목을 완료로 바꾸지 않습니다.
