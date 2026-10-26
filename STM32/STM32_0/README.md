@@ -12,4 +12,7 @@
 - [보고서](reports/) · [보관된 검증 기록](verification/previous/)
 - [날짜별 제출 현황](../SUBMISSION_CHECKLIST.md)
 
-결과보고서와 기존 영상 4개를 보존했습니다.
+- [10/12 예비보고서 PDF](reports/STM32_0_예비보고서_주윤찬.pdf)
+- [10/12 결과보고서 PDF](reports/result.pdf)
+
+예비·결과보고서와 기존 영상 4개를 확인할 수 있습니다.

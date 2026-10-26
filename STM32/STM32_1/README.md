@@ -14,4 +14,8 @@
 
 - [직접 작성한 10/19 새 코드와 검증](REIMPLEMENTATION.md)
 
-- [결과보고서 Word](reports/STM32_1_결과레포트_주윤찬_2023440132.docx) · 원본 PDF와 내용 동일, 7쪽
+- [결과보고서 Word](reports/STM32_1_결과레포트_주윤찬_2023440132.docx) · 이전 Word 버전
+
+- [10/19 예비레포트 PDF](reports/prelab.pdf)
+
+결과보고서 PDF는 2026-10-26 첨부한 최종 파일로 갱신했습니다.
